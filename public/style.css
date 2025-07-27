@@ -22,7 +22,8 @@ body {
 
 .app-layout {
     display: flex;
-    transition: margin-left 0.3s ease;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .sidebar {
