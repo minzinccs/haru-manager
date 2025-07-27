@@ -38,16 +38,23 @@ body {
     overflow-x: hidden;
 }
 
-.sidebar:not(:hover) {
+.sidebar.collapsed {
     width: 80px;
 }
 
-.sidebar:not(:hover) .sidebar-header h2,
-.sidebar:not(:hover) .nav-item span {
-    display: none;
+.sidebar .sidebar-header h2,
+.sidebar .nav-item span {
+    opacity: 1;
+    transition: opacity 0.2s ease;
 }
 
-.sidebar:not(:hover) .nav-item {
+.sidebar.collapsed .sidebar-header h2,
+.sidebar.collapsed .nav-item span {
+    opacity: 0;
+    pointer-events: none; /* Ngăn tương tác khi bị ẩn */
+}
+
+.sidebar.collapsed .nav-item {
     justify-content: center;
 }
 
@@ -88,8 +95,12 @@ body {
 .main-container {
     flex-grow: 1;
     padding: 1rem;
-    margin-left: 80px; /* Luôn có khoảng đệm cho sidebar thu gọn */
+    margin-left: 250px;
     transition: margin-left 0.3s ease;
+}
+
+.main-container.collapsed {
+    margin-left: 80px;
 }
 
 .toolbar {
@@ -103,7 +114,11 @@ body {
 }
 
 #sidebar-toggle {
-    display: none; /* Ẩn nút bấm */
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .toolbar h1 {
