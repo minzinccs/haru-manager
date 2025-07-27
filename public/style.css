@@ -95,8 +95,10 @@ body {
 .main-container {
     flex-grow: 1;
     padding: 1rem;
-    padding-left: 80px; /* Luôn có khoảng đệm cho sidebar thu gọn */
     transition: padding-left 0.3s ease; /* Hiệu ứng mượt mà hơn */
+    /* Bỏ margin-left và padding-left để nội dung không bị đẩy */
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .toolbar {
@@ -290,3 +292,16 @@ td img {
 
 #save-json-button { background-color: var(--accent-color); color: white; }
 #save-json-button:hover { background-color: var(--accent-hover); }
+
+/* Right panel collapsed by default and expands on hover */
+#panel-right {
+    width: 80px;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    border-radius: 8px;
+}
+
+#panel-right:hover {
+    width: 100%;
+    overflow: auto;
+}
