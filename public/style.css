@@ -38,16 +38,16 @@ body {
     overflow-x: hidden;
 }
 
-.sidebar.collapsed {
+.sidebar:not(:hover) {
     width: 80px;
 }
 
-.sidebar.collapsed .sidebar-header h2,
-.sidebar.collapsed .nav-item span {
+.sidebar:not(:hover) .sidebar-header h2,
+.sidebar:not(:hover) .nav-item span {
     display: none;
 }
 
-.sidebar.collapsed .nav-item {
+.sidebar:not(:hover) .nav-item {
     justify-content: center;
 }
 
@@ -89,7 +89,7 @@ body {
     transition: margin-left 0.3s ease;
 }
 
-.main-container.collapsed {
+.main-container.sidebar-collapsed {
     margin-left: 80px; /* Bằng chiều rộng của sidebar khi thu gọn */
 }
 
@@ -104,12 +104,7 @@ body {
 }
 
 #sidebar-toggle {
-    background: none;
-    border: none;
-    color: var(--primary-text);
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-right: 1rem;
+    display: none; /* Ẩn nút bấm */
 }
 
 .toolbar h1 {
@@ -150,11 +145,32 @@ select, input[type="text"] {
     background-color: var(--accent-hover);
 }
 
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: calc(100vh - 100px); /* Chiều cao ước tính, có thể điều chỉnh */
+}
+
 .table-container {
-    width: 100%;
-    overflow-x: auto;
+    flex-grow: 1;
+    overflow: auto;
     border: 1px solid var(--border-color);
     border-radius: 8px;
+}
+
+.bottom-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    height: 300px; /* Chiều cao cố định cho khu vực panel */
+}
+
+.panel {
+    background-color: var(--header-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
 }
 
 table {
