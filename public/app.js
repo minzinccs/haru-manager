@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sidebarToggle.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
-        mainContainer.classList.toggle('full-width');
+        mainContainer.classList.toggle('collapsed');
     });
 
     statusFilter.addEventListener('change', () => {
