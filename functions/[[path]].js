@@ -117,8 +117,7 @@ export async function onRequest(context) {
     }
 
 
-    // Nếu không khớp với bất kỳ route API nào, Pages sẽ tự động phục vụ tệp tĩnh
-    // từ thư mục /public. Chúng ta không cần xử lý ở đây.
-    // Trả về 404 cho các route API không xác định.
-    return new Response('API endpoint not found.', { status: 404 });
+    // Nếu không phải là một route API đã biết, chuyển yêu cầu cho Pages
+    // để nó có thể phục vụ các tệp tĩnh như index.html
+    return context.next();
 }
