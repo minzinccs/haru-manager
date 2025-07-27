@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector('.sidebar');
+    const mainContainer = document.querySelector('.main-container');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+
     const tableBody = document.getElementById('data-table-body');
     const statusFilter = document.getElementById('status-filter');
     const searchInput = document.getElementById('search-input');
@@ -138,6 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        mainContainer.classList.toggle('full-width');
+    });
 
     statusFilter.addEventListener('change', () => {
         fetchData(statusFilter.value, searchInput.value);

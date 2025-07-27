@@ -7,11 +7,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="toolbar">
-            <h1>Haru Image Manager</h1>
-            <div class="actions">
-                <div class="filter-group">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Haru</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <svg><!-- icon --></svg>
+                    <span>Image Curation</span>
+                </a>
+                <!-- Thêm các mục menu khác ở đây trong tương lai -->
+            </nav>
+        </aside>
+
+        <div class="main-container">
+            <header class="toolbar">
+                <button id="sidebar-toggle">☰</button>
+                <h1>Image Manager</h1>
+                <div class="actions">
+                    <div class="filter-group">
                     <label for="status-filter">Trạng thái:</label>
                     <select id="status-filter">
                         <option value="unverified" selected>Chưa duyệt</option>
@@ -55,6 +70,7 @@
         <footer class="pagination">
             <!-- Phân trang sẽ được thêm vào đây -->
         </footer>
+        </div>
     </div>
 
     <!-- Cửa sổ Popup để chỉnh sửa JSON -->

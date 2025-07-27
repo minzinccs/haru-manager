@@ -17,15 +17,68 @@ body {
     background-color: var(--bg-color);
     color: var(--primary-text);
     margin: 0;
-    padding: 1rem;
+    overflow-x: hidden;
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
+.app-layout {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--header-bg);
+    border-right: 1px solid var(--border-color);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: transform 0.3s ease;
+    z-index: 100;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    color: var(--primary-text);
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: var(--secondary-text);
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--table-row-hover);
+    color: var(--primary-text);
+}
+
+.main-container {
+    flex-grow: 1;
+    padding: 1rem;
+    margin-left: 250px; /* Bằng chiều rộng của sidebar */
+    transition: margin-left 0.3s ease;
+}
+
+.main-container.full-width {
+    margin-left: 0;
 }
 
 .toolbar {
@@ -36,6 +89,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#sidebar-toggle {
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
 }
 
 .toolbar h1 {
