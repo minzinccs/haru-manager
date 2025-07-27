@@ -53,12 +53,11 @@ body {
 
 .sidebar-header {
     padding: 1.5rem;
-    text-align: center;
     border-bottom: 1px solid var(--border-color);
     height: 32px; /* Chiều cao cố định */
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
 }
 
 .sidebar-header h2 {
@@ -89,12 +88,7 @@ body {
 .main-container {
     flex-grow: 1;
     padding: 1rem;
-    margin-left: 250px; /* Bằng chiều rộng của sidebar */
-    transition: margin-left 0.3s ease;
-}
-
-.main-container.collapsed {
-    margin-left: 80px; /* Bằng chiều rộng của sidebar khi thu gọn */
+    /* Xóa margin-left để sidebar nổi lên trên */
 }
 
 .toolbar {
@@ -113,7 +107,6 @@ body {
     color: var(--primary-text);
     font-size: 1.5rem;
     cursor: pointer;
-    margin-right: 1rem;
 }
 
 .toolbar h1 {
