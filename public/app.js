@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Load ---
-    // Thiết lập trạng thái ban đầu
-    sidebar.classList.add('collapsed');
+    // Thiết lập trạng thái ban đầu bằng cách kích hoạt sự kiện click
+    sidebarToggle.click();
     fetchData();
 });
