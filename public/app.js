@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector('.sidebar');
-    const mainContainer = document.querySelector('.main-container');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
+    // Không cần các biến sidebar nữa vì CSS xử lý hết
+    // const sidebar = document.querySelector('.sidebar');
+    // const mainContainer = document.querySelector('.main-container');
+    // const sidebarToggle = document.getElementById('sidebar-toggle');
 
     const tableBody = document.getElementById('data-table-body');
     const statusFilter = document.getElementById('status-filter');
@@ -143,10 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-    });
-
     statusFilter.addEventListener('change', () => {
         fetchData(statusFilter.value, searchInput.value);
     });
@@ -211,7 +208,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Load ---
-    // Thiết lập trạng thái ban đầu
-    sidebar.classList.add('collapsed');
     fetchData();
 });

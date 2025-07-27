@@ -38,17 +38,17 @@ body {
     overflow-x: hidden;
 }
 
-.sidebar.collapsed {
+.sidebar:not(:hover) {
     width: 80px;
 }
 
-.sidebar.collapsed .sidebar-header h2,
-.sidebar.collapsed .nav-item span {
+.sidebar:not(:hover) .sidebar-header h2,
+.sidebar:not(:hover) .nav-item span {
     display: none;
 }
 
-.sidebar.collapsed .nav-item {
-    justify-content: flex-start; /* Giữ icon ở bên trái */
+.sidebar:not(:hover) .nav-item {
+    justify-content: center;
 }
 
 .sidebar-header {
@@ -88,7 +88,8 @@ body {
 .main-container {
     flex-grow: 1;
     padding: 1rem;
-    /* Xóa margin-left để sidebar nổi lên trên */
+    margin-left: 80px; /* Luôn có khoảng đệm cho sidebar thu gọn */
+    transition: margin-left 0.3s ease;
 }
 
 .toolbar {
@@ -102,11 +103,7 @@ body {
 }
 
 #sidebar-toggle {
-    background: none;
-    border: none;
-    color: var(--primary-text);
-    font-size: 1.5rem;
-    cursor: pointer;
+    display: none; /* Ẩn nút bấm */
 }
 
 .toolbar h1 {
