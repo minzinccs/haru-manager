@@ -1,105 +1,80 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Haru Image Manager</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="app-layout">
-        <header class="header-bar">
-            <h1>Haru Image Manager</h1>
-        </header>
-        <div class="content-wrapper">
-            <aside class="sidebar collapsed">
-                <div class="sidebar-header">
-                    <h2>Haru</h2>
-                </div>
-                <nav class="sidebar-nav">
-                    <a href="#" class="nav-item active" title="Image Curation">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                        <span>Image Curation</span>
-                    </a>
-                    <!-- Thêm các mục menu khác ở đây trong tương lai -->
-                </nav>
-            </aside>
+    <header class="header-bar">
+        <h1>Haru Image Manager</h1>
+    </header>
+    <div class="content-columns">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Haru</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" title="Image Curation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span>Image Curation</span>
+                </a>
+                <!-- Thêm các mục menu khác ở đây trong tương lai -->
+            </nav>
+        </aside>
 
-            <main class="main-container">
-                <header class="toolbar">
-                    <h1>Image Manager</h1>
-                    <div class="actions">
-                        <div class="filter-group">
-                            <label for="status-filter">Trạng thái:</label>
-                            <select id="status-filter">
-                                <option value="unverified" selected>Chưa duyệt</option>
-                                <option value="approved">Đã duyệt</option>
-                                <option value="rejected">Đã từ chối</option>
-                                <option value="all">Tất cả</option>
-                            </select>
-                        </div>
-                        <div class="search-group">
-                            <input type="text" id="search-input" placeholder="Tìm theo tên tệp...">
-                        </div>
-                        <div class="upload-group">
-                            <label for="json-upload" class="upload-button">Tải lên JSON</label>
-                            <input type="file" id="json-upload" accept=".json" style="display: none;">
-                        </div>
+        <main class="main-content">
+            <header class="toolbar">
+                <h1>Image Manager</h1>
+                <div class="actions">
+                    <div class="filter-group">
+                        <label for="status-filter">Trạng thái:</label>
+                        <select id="status-filter">
+                            <option value="unverified" selected>Chưa duyệt</option>
+                            <option value="approved">Đã duyệt</option>
+                            <option value="rejected">Đã từ chối</option>
+                            <option value="all">Tất cả</option>
+                        </select>
                     </div>
-                </header>
-
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Ảnh</th>
-                                <th>Tên tệp</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body">
-                            <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
-                            <tr>
-                                <td colspan="5">Đang tải dữ liệu...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="bottom-panels">
-                    <div class="panel" id="panel-left">
-                        <!-- Nội dung cho panel trái sẽ được thêm vào đây -->
+                    <div class="search-group">
+                        <input type="text" id="search-input" placeholder="Tìm theo tên tệp..." />
                     </div>
-                    <div class="panel" id="panel-right">
-                        <!-- Nội dung cho panel phải sẽ được thêm vào đây -->
+                    <div class="upload-group">
+                        <label for="json-upload" class="upload-button">Tải lên JSON</label>
+                        <input type="file" id="json-upload" accept=".json" style="display: none;" />
                     </div>
                 </div>
-            </main>
+            </header>
 
-            <footer class="pagination">
-                <!-- Phân trang sẽ được thêm vào đây -->
-            </footer>
-        </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ảnh</th>
+                            <th>Tên tệp</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+                        <tr>
+                            <td colspan="5">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bottom-panels">
+                <div class="panel" id="panel-left">
+                    <!-- Nội dung cho panel trái sẽ được thêm vào đây -->
+                </div>
+                <div class="panel" id="panel-right">
+                    <!-- Nội dung cho panel phải sẽ được thêm vào đây -->
+                </div>
+            </div>
+        </main>
     </div>
-
-    <!-- Cửa sổ Popup để chỉnh sửa JSON -->
-    <div id="json-editor-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Chỉnh sửa dữ liệu JSON</h2>
-                <span class="close-button">&times;</span>
-            </div>
-            <div class="modal-body">
-                <textarea id="json-editor-textarea"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button id="save-json-button">Lưu thay đổi</button>
-                <button id="cancel-json-button">Hủy</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
 </body>
 </html>

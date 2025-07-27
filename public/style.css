@@ -20,11 +20,39 @@ body {
     overflow-x: hidden;
 }
 
-.app-layout {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+.header-bar {
+    background-color: var(--header-bg);
+    padding: 1rem 1.5rem;
+    color: var(--primary-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    width: 100%;
+    box-sizing: border-box;
 }
+
+.content-columns {
+    display: flex;
+    height: calc(100vh - 60px); /* Adjust height to exclude header */
+}
+
+.sidebar {
+    width: 5%;
+    background-color: var(--header-bg);
+    border-right: 1px solid var(--border-color);
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.main-content {
+    width: 95%;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+/* Other existing styles remain unchanged */
 
 .sidebar {
     width: 250px;
