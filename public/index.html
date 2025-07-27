@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haru Image Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="toolbar">
+            <h1>Haru Image Manager</h1>
+            <div class="actions">
+                <div class="filter-group">
+                    <label for="status-filter">Trạng thái:</label>
+                    <select id="status-filter">
+                        <option value="unverified" selected>Chưa duyệt</option>
+                        <option value="approved">Đã duyệt</option>
+                        <option value="rejected">Đã từ chối</option>
+                        <option value="all">Tất cả</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="search-input" placeholder="Tìm theo tên tệp...">
+                </div>
+                <div class="upload-group">
+                    <label for="json-upload" class="upload-button">Tải lên JSON</label>
+                    <input type="file" id="json-upload" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ảnh</th>
+                            <th>Tên tệp</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+                        <tr>
+                            <td colspan="5">Đang tải dữ liệu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="pagination">
+            <!-- Phân trang sẽ được thêm vào đây -->
+        </footer>
+    </div>
+
+    <!-- Cửa sổ Popup để chỉnh sửa JSON -->
+    <div id="json-editor-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chỉnh sửa dữ liệu JSON</h2>
+                <span class="close-button">&times;</span>
+            </div>
+            <div class="modal-body">
+                <textarea id="json-editor-textarea"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="save-json-button">Lưu thay đổi</button>
+                <button id="cancel-json-button">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
