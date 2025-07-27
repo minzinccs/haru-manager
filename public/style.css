@@ -38,17 +38,17 @@ body {
     overflow-x: hidden;
 }
 
-.sidebar:not(:hover) {
+.sidebar.collapsed {
     width: 80px;
 }
 
-.sidebar:not(:hover) .sidebar-header h2,
-.sidebar:not(:hover) .nav-item span {
+.sidebar.collapsed .sidebar-header h2,
+.sidebar.collapsed .nav-item span {
     display: none;
 }
 
-.sidebar:not(:hover) .nav-item {
-    justify-content: center;
+.sidebar.collapsed .nav-item {
+    justify-content: flex-start; /* Giữ icon ở bên trái */
 }
 
 .sidebar-header {
@@ -89,7 +89,7 @@ body {
     transition: margin-left 0.3s ease;
 }
 
-.main-container.sidebar-collapsed {
+.main-container.collapsed {
     margin-left: 80px; /* Bằng chiều rộng của sidebar khi thu gọn */
 }
 
@@ -104,7 +104,12 @@ body {
 }
 
 #sidebar-toggle {
-    display: none; /* Ẩn nút bấm */
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
 }
 
 .toolbar h1 {

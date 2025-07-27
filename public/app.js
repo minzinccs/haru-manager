@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.querySelector('.sidebar');
     const mainContainer = document.querySelector('.main-container');
-    // Nút bấm đã bị xóa, không cần biến này nữa
-    // const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
 
     const tableBody = document.getElementById('data-table-body');
     const statusFilter = document.getElementById('status-filter');
@@ -144,12 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
-    sidebar.addEventListener('mouseenter', () => {
-        mainContainer.style.marginLeft = '250px';
-    });
-
-    sidebar.addEventListener('mouseleave', () => {
-        mainContainer.style.marginLeft = '80px';
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        mainContainer.classList.toggle('collapsed');
     });
 
     statusFilter.addEventListener('change', () => {
@@ -217,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial Load ---
     // Thiết lập trạng thái ban đầu
-    mainContainer.style.marginLeft = '80px';
+    sidebar.classList.add('collapsed');
+    mainContainer.classList.add('collapsed');
     fetchData();
 });
