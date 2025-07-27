@@ -95,12 +95,8 @@ body {
 .main-container {
     flex-grow: 1;
     padding: 1rem;
-    margin-left: 250px;
-    transition: margin-left 0.3s ease;
-}
-
-.main-container.collapsed {
-    margin-left: 80px;
+    padding-left: 80px; /* Luôn có khoảng đệm cho sidebar thu gọn */
+    transition: padding-left 0.3s ease; /* Hiệu ứng mượt mà hơn */
 }
 
 .toolbar {

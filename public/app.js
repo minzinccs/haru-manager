@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sidebarToggle.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
-        mainContainer.classList.toggle('collapsed');
     });
 
     statusFilter.addEventListener('change', () => {
@@ -214,6 +213,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Load ---
     // Thiết lập trạng thái ban đầu
     sidebar.classList.add('collapsed');
-    mainContainer.classList.add('collapsed');
     fetchData();
 });
