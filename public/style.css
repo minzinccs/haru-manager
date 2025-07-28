@@ -85,10 +85,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 10;
-    transition: width 0.2s cubic-bezier(.4,0,.2,1);
+    z-index: 1001;
+    transition: width 0.25s cubic-bezier(.4,0,.2,1);
     box-sizing: border-box;
     padding-top: 0.5rem;
+    overflow-x: hidden;
+}
+.sidebar:hover {
+    width: 200px;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.18);
 }
 
 .sidebar-nav {
@@ -130,6 +135,8 @@ body {
     min-width: 0;
     background: var(--bg-color);
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 
 /* Dashboard header */
@@ -171,24 +178,40 @@ body {
     align-items: flex-start;
     min-width: 0;
 }
-.stat-title {
-    font-size: 1.1rem;
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 44px;
+    width: 100%;
     color: var(--secondary-text);
-    margin-bottom: 0.3rem;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    transition: background 0.18s, color 0.18s, transform 0.18s, padding 0.2s;
+    cursor: pointer;
+    margin: 2px 0;
+    padding-left: 0;
+    overflow: hidden;
 }
-.stat-value {
-    font-size: 2.1rem;
-    font-weight: bold;
-    margin-bottom: 0.2rem;
+.sidebar:hover .nav-item {
+    padding-left: 18px;
+    font-size: 1.15rem;
 }
-.stat-desc {
-    font-size: 0.95rem;
-    color: var(--secondary-text);
+.nav-item span {
+    opacity: 0;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+    transition: opacity 0.2s, margin 0.2s;
 }
-
-/* Issues section */
-.issues-section {
-    margin-bottom: 2rem;
+.sidebar:hover .nav-item span {
+    opacity: 1;
+    margin-left: 1rem;
+}
+.nav-item.active,
+.nav-item:hover {
+    background: #23272f;
+    color: var(--accent);
+    transform: scale(1.13);
 }
 .issues-section h2 {
     font-size: 1.3rem;
