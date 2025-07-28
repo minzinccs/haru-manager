@@ -43,9 +43,9 @@ body {
 
 
 .sidebar {
-    width: 80px;
-    background-color: var(--header-bg);
-    border-right: 1px solid var(--border-color);
+    width: 40px;
+    background-color: #111216;
+    border-right: 1.5px solid #23272f;
     height: calc(100vh - 64px);
     box-sizing: border-box;
     overflow-y: auto;
@@ -53,12 +53,12 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    transition: width 0.3s ease;
+    transition: width 0.3s cubic-bezier(.4,0,.2,1);
 }
 
 .main-content {
     flex: 1 1 0;
-    margin-left: 80px;
+    margin-left: 40px;
     padding: 1.5rem 2rem;
     background-color: var(--bg-color);
     border-radius: 8px;
