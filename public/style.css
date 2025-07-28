@@ -1,3 +1,33 @@
+/* Review section layout */
+.review-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.review-section .row {
+    display: grid;
+    gap: 1.5rem;
+}
+.review-section .row-1 {
+    grid-template-columns: 1fr 2fr;
+}
+.review-section .row-2 {
+    grid-template-columns: 1fr 1fr;
+}
+.review-section .cell {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--primary-text);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
 
 :root {
     --bg-color: #18191b;
