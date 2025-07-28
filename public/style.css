@@ -26,30 +26,46 @@ body {
     color: var(--primary-text);
     font-size: 1.5rem;
     font-weight: 600;
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .content-columns {
     display: flex;
-    height: calc(100vh - 60px); /* Adjust height to exclude header */
+    height: 100vh;
+    margin-top: 64px; /* chiều cao header-bar */
+    position: relative;
 }
 
+
 .sidebar {
-    width: 5%;
+    width: 80px;
     background-color: var(--header-bg);
     border-right: 1px solid var(--border-color);
-    height: 100%;
+    height: calc(100vh - 64px);
     box-sizing: border-box;
     overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease;
 }
 
 .main-content {
-    width: 95%;
-    padding: 1rem;
+    flex: 1 1 0;
+    margin-left: 80px;
+    padding: 1.5rem 2rem;
     background-color: var(--bg-color);
     border-radius: 8px;
     overflow-y: auto;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
 }
 
 /* Other existing styles remain unchanged */
@@ -60,34 +76,8 @@ body {
     border-right: 1px solid var(--border-color);
     height: 100vh;
     position: fixed;
-    left: 0;
-    top: 0;
-    transition: width 0.3s ease;
-    z-index: 100;
-    overflow-x: hidden;
-}
 
-.sidebar.collapsed {
-    width: 80px;
-}
-
-.sidebar .sidebar-header h2,
-.sidebar .nav-item span {
-    opacity: 1;
-    transition: opacity 0.2s ease;
-}
-
-.sidebar.collapsed .sidebar-header h2,
-.sidebar.collapsed .nav-item span {
-    opacity: 0;
-    pointer-events: none; /* Ngăn tương tác khi bị ẩn */
-}
-
-.sidebar.collapsed .nav-item {
-    justify-content: center;
-}
-
-.sidebar-header {
+/* Xóa các rule sidebar fixed, collapsed, chỉ giữ sidebar relative */
     padding: 1.5rem;
     border-bottom: 1px solid var(--border-color);
     height: 32px; /* Chiều cao cố định */
