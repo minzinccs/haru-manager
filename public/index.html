@@ -3,77 +3,90 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Haru Image Manager</title>
+    <title>Haru Dashboard</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <header class="header-bar">
-        <h1>Haru Image Manager</h1>
+        <div class="header-left">
+            <span class="logo">🟩</span>
+            <span class="project-title">minzinccs's Project</span>
+            <span class="env-badge">Production</span>
+        </div>
+        <div class="header-right">
+            <span class="user-avatar">TT</span>
+        </div>
     </header>
     <div class="content-columns">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Haru</h2>
-            </div>
             <nav class="sidebar-nav">
-                <!-- Sidebar navigation: thêm mục mới ở đây nếu cần -->
-                <a href="#" class="nav-item active" title="Image Curation">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    <span>Image Curation</span>
+                <a href="#" class="nav-item active" title="Dashboard">
+                    <span>🏠</span>
                 </a>
-                <!-- Thêm các mục menu khác ở đây trong tương lai -->
+                <a href="#" class="nav-item" title="Database">
+                    <span>🗄️</span>
+                </a>
+                <a href="#" class="nav-item" title="Auth">
+                    <span>🔑</span>
+                </a>
+                <a href="#" class="nav-item" title="Storage">
+                    <span>🗂️</span>
+                </a>
+                <a href="#" class="nav-item" title="Realtime">
+                    <span>⚡</span>
+                </a>
             </nav>
         </aside>
-
         <main class="main-content">
-            <header class="toolbar">
-                <h1>Image Manager</h1>
-                <div class="actions">
-                    <div class="filter-group">
-                        <label for="status-filter">Trạng thái:</label>
-                        <select id="status-filter">
-                            <option value="unverified" selected>Chưa duyệt</option>
-                            <option value="approved">Đã duyệt</option>
-                            <option value="rejected">Đã từ chối</option>
-                            <option value="all">Tất cả</option>
-                        </select>
-                    </div>
-                    <div class="search-group">
-                        <input type="text" id="search-input" placeholder="Tìm theo tên tệp..." />
-                    </div>
-                    <div class="upload-group">
-                        <label for="json-upload" class="upload-button">Tải lên JSON</label>
-                        <input type="file" id="json-upload" accept=".json" style="display: none;" />
-                    </div>
-                </div>
-            </header>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Ảnh</th>
-                            <th>Tên tệp</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data-table-body">
-                        <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
-                        <tr>
-                            <td colspan="5">Đang tải dữ liệu...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="dashboard-header">
+                <h1>minzinccs's Project <span class="nano-badge">NANO</span></h1>
+                <div class="project-status">Project Status</div>
             </div>
-            <div class="bottom-panels">
-                <div class="panel" id="panel-left">
-                    <!-- Nội dung cho panel trái sẽ được thêm vào đây -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Database</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">REST Requests</div>
                 </div>
-                <div class="panel" id="panel-right">
-                    <!-- Nội dung cho panel phải sẽ được thêm vào đây -->
-                    <!-- Đã cập nhật ngày 28/07/2025 để test git push -->
+                <div class="stat-card">
+                    <div class="stat-title">Auth</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Auth Requests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Storage</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Storage Requests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Realtime</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Realtime Requests</div>
+                </div>
+            </div>
+            <div class="issues-section">
+                <h2><span class="issue-count">7</span> issues need <span class="attention">attention</span></h2>
+                <div class="issues-table">
+                    <div class="issue-row">
+                        <span class="issue-type security">SECURITY</span>
+                        <span>Table <b>public.raids</b> is public, but RLS has not been enabled.</span>
+                    </div>
+                    <div class="issue-row">
+                        <span class="issue-type security">SECURITY</span>
+                        <span>Table <b>public.players</b> is public, but RLS has not been enabled.</span>
+                    </div>
+                    <!-- Thêm các issue khác nếu muốn -->
+                </div>
+            </div>
+            <div class="slow-queries-section">
+                <h2>SLOW QUERIES</h2>
+                <div class="queries-table">
+                    <div class="query-row">
+                        <span>SELECT name FROM pg_timezone_names</span>
+                        <span class="query-time">0.17s</span>
+                        <span class="query-calls">3</span>
+                    </div>
+                    <!-- Thêm các truy vấn khác nếu muốn -->
                 </div>
             </div>
         </main>

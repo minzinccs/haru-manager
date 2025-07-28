@@ -92,9 +92,10 @@ body {
     border-bottom: 1px solid var(--border-color);
     height: 32px; /* Chiều cao cố định */
     display: flex;
-    align-items: center;
-    gap: 1rem;
-}
+    /* Xóa block nav-item:hover, .nav-item.active thừa/lỗi ở cuối file */
+    /* background-color: var(--table-row-hover); */
+    /* color: var(--primary-text); */
+    /* } */
 
 .sidebar-header h2 {
     margin: 0;
@@ -209,7 +210,28 @@ select, input[type="text"] {
 
 .panel {
     background-color: var(--header-bg);
-    border: 1px solid var(--border-color);
+}
+/* Sidebar hover effect */
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    color: #fff;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    margin: 4px 0;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.sidebar-nav .nav-item.active,
+.sidebar-nav .nav-item:hover {
+    background: #23272f;
+    color: #3b82f6;
+    transform: scale(1.12);
+}
+.sidebar-nav .nav-item span {
+    pointer-events: none;
+}
     border-radius: 8px;
     padding: 1rem;
 }
