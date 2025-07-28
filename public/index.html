@@ -1,10 +1,60 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Haru Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="header-bar">
+        <div class="header-left">
+            <span class="logo">🟩</span>
+            <span class="project-title">minzinccs's Project</span>
+            <span class="env-badge">Production</span>
+        </div>
+        <div class="header-right">
+            <span class="user-avatar">TT</span>
+        </div>
+    </header>
+    <div class="content-columns">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active" title="Dashboard">
+                    <span>🏠</span><span class="nav-label">Dashboard</span>
+                </a>
+                <a href="review.html" class="nav-item" title="Kiểm duyệt/Phê duyệt">
+                    <span>✅</span><span class="nav-label">Kiểm duyệt</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Dashboard</h1>
+                <div class="project-status">Tổng quan hệ thống Cloudflare</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Tổng số ảnh</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Ảnh đã upload</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Dung lượng</div>
+                    <div class="stat-value">0 MB</div>
+                    <div class="stat-desc">Đã sử dụng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Ảnh chờ duyệt</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Chưa kiểm duyệt</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Ảnh bị từ chối</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-desc">Rejected</div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
 </head>
 <body>
     <header class="header-bar">
