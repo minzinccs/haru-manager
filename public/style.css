@@ -106,15 +106,31 @@ body {
 .nav-item {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 44px;
     width: 100%;
     color: var(--secondary-text);
     font-size: 1.5rem;
     border-radius: 8px;
-    transition: background 0.18s, color 0.18s, transform 0.18s;
+    transition: background 0.18s, color 0.18s, transform 0.18s, padding 0.2s;
     cursor: pointer;
     margin: 2px 0;
+    padding-left: 0;
+    overflow: hidden;
+}
+.sidebar:hover .nav-item {
+    padding-left: 18px;
+    font-size: 1.15rem;
+}
+.nav-item span {
+    opacity: 0;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+    transition: opacity 0.2s, margin 0.2s;
+}
+.sidebar:hover .nav-item span {
+    opacity: 1;
+    margin-left: 1rem;
 }
 .nav-item.active,
 .nav-item:hover {
