@@ -13,9 +13,10 @@
 }
 .review-section .row-1 {
     grid-template-columns: 1fr 2fr;
-    border-bottom: 4px solid var(--sidebar-border); /* Đường kẻ ngang rõ giữa 2 hàng */
+    border-bottom: none;
 }
 .review-section .row-2 {
+    border-top: 2.5px solid var(--sidebar-border); /* Đường kẻ ngang giữa 2 hàng giống border giữa các ô */
     grid-template-columns: 1fr 1fr;
 }
 .review-section .cell {
