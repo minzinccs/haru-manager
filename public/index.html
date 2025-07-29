@@ -55,7 +55,72 @@
                     <div class="stat-desc">Rejected</div>
                 </div>
             </div>
+            <div class="review-section">
+                <div class="row-1">
+                    <div class="cell-1-1">Nội dung cần kiểm duyệt</div>
+                    <div class="cell-1-2">Thông tin chi tiết</div>
+                </div>
+                <div class="row-2">
+                    <div class="cell-2-1">Ảnh 1</div>
+                    <div class="cell-2-2">Đã duyệt</div>
+                </div>
+                <div class="row-2">
+                    <div class="cell-2-1">Ảnh 2</div>
+                    <div class="cell-2-2">Chờ duyệt</div>
+                </div>
+            </div>
         </main>
     </div>
+    <style>
+        .review-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .review-section .row-1 {
+            display: contents; /* Sử dụng display: contents cho hàng tiêu đề */
+        }
+
+        .review-section .row-2 {
+            display: contents; /* Sử dụng display: contents cho hàng dữ liệu */
+        }
+
+        .review-section .cell-1-1,
+        .review-section .cell-1-2,
+        .review-section .cell-2-1,
+        .review-section .cell-2-2 {
+            padding: 10px;
+            border: 2.5px solid transparent; /* Đặt border mặc định là trong suốt */
+        }
+
+        .review-section .cell-1-1 {
+            background-color: var(--header-bg);
+            font-weight: bold;
+        }
+
+        .review-section .cell-2-1 {
+            border-right: 2.5px solid var(--sidebar-border);
+        }
+
+        .review-section .row-2 {
+            grid-template-columns: 1fr 1fr;
+            border-top: 2.5px solid var(--sidebar-border); /* Chỉ border-top cho hàng 2 */
+        }
+
+        .review-section .row-1 .cell-1-1 {
+            border-right: 2.5px solid var(--sidebar-border);
+        }
+
+        .review-section .row-2 .cell-2-1 {
+            border-right: 2.5px solid var(--sidebar-border);
+        }
+
+        .review-section .row-2 .cell-2-1,
+        .review-section .row-2 .cell-2-2 {
+            border-top: none; /* Không border-top cho cell, chỉ cho hàng */
+        }
+    </style>
 </body>
 </html>
