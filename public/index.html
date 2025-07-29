@@ -80,11 +80,11 @@
         }
 
         .review-section .row-1 {
-            display: contents; /* Sử dụng display: contents cho hàng tiêu đề */
+            display: contents;
         }
 
         .review-section .row-2 {
-            display: contents; /* Sử dụng display: contents cho hàng dữ liệu */
+            display: contents;
         }
 
         .review-section .cell-1-1,
@@ -92,7 +92,7 @@
         .review-section .cell-2-1,
         .review-section .cell-2-2 {
             padding: 10px;
-            border: 2.5px solid transparent; /* Đặt border mặc định là trong suốt */
+            border: 2.5px solid transparent;
         }
 
         .review-section .cell-1-1 {
@@ -100,26 +100,15 @@
             font-weight: bold;
         }
 
+        .review-section .cell-1-1,
         .review-section .cell-2-1 {
             border-right: 2.5px solid var(--sidebar-border);
         }
 
-        .review-section .row-2 {
-            grid-template-columns: 1fr 1fr;
-            border-top: 2.5px solid var(--sidebar-border); /* Chỉ border-top cho hàng 2 */
-        }
-
-        .review-section .row-1 .cell-1-1 {
-            border-right: 2.5px solid var(--sidebar-border);
-        }
-
-        .review-section .row-2 .cell-2-1 {
-            border-right: 2.5px solid var(--sidebar-border);
-        }
-
-        .review-section .row-2 .cell-2-1,
-        .review-section .row-2 .cell-2-2 {
-            border-top: none; /* Không border-top cho cell, chỉ cho hàng */
+        /* Border ngang giữa các hàng: đặt border-top cho từng cell của row-2 */
+        .review-section .cell-2-1,
+        .review-section .cell-2-2 {
+            border-top: 2.5px solid var(--sidebar-border);
         }
     </style>
 </body>
