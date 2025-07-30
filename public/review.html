@@ -41,23 +41,14 @@
             </div>
             <style>
                 .review-section {
-                    display: flex;
-                    flex-direction: column;
+                    display: grid;
+                    grid-template-columns: 1fr 2fr;
+                    grid-template-rows: 1fr 1fr;
                     border-radius: 12px;
                     background: var(--card-bg, #222);
                     overflow: hidden;
                 }
-                .review-section .row {
-                    display: grid;
-                    background: var(--card-bg, #222);
-                }
-                .review-section .row-1 {
-                    grid-template-columns: 1fr 2fr;
-                }
-                .review-section .row-2 {
-                    grid-template-columns: 1fr 1fr;
-                    border-top: 3px solid #fff;
-                }
+
                 .review-section .cell {
                     padding: 1.2rem;
                     min-height: 120px;
@@ -70,8 +61,31 @@
                     border-radius: 0;
                     font-size: 1.1rem;
                 }
-                .review-section .row .cell:not(:last-child) {
+
+                /* Đường kẻ trắng giữa các ô trong hàng */
+                .review-section .cell:nth-child(1),
+                .review-section .cell:nth-child(3) {
                     border-right: 3px solid #fff;
+                }
+
+                /* Đường kẻ trắng giữa 2 hàng */
+                .review-section .cell:nth-child(3),
+                .review-section .cell:nth-child(4) {
+                    border-top: 3px solid #fff;
+                }
+
+                /* Hàng 2 tỉ lệ 1-1 */
+                .review-section {
+                    grid-template-columns: 1fr 2fr;
+                    grid-template-rows: 1fr 1fr;
+                }
+                .review-section .cell:nth-child(3) {
+                    grid-column: 1;
+                    grid-row: 2;
+                }
+                .review-section .cell:nth-child(4) {
+                    grid-column: 2;
+                    grid-row: 2;
                 }
             </style>
         </main>
