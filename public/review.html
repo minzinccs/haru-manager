@@ -30,11 +30,50 @@
         </aside>
         <main class="main-content">
             <div class="review-section">
-                <div class="cell cell-1-1">Ô 1 (1 phần)</div>
-                <div class="cell cell-1-2">Ô 2 (2 phần)</div>
-                <div class="cell cell-2-1">Ô 1 (1 phần)</div>
-                <div class="cell cell-2-2">Ô 2 (1 phần)</div>
+                <div class="row row-1">
+                    <div class="cell cell-1-1">Ô 1 (1 phần)</div>
+                    <div class="cell cell-1-2">Ô 2 (2 phần)</div>
+                </div>
+                <div class="row row-2">
+                    <div class="cell cell-2-1">Ô 1 (1 phần)</div>
+                    <div class="cell cell-2-2">Ô 2 (1 phần)</div>
+                </div>
             </div>
+            <style>
+                .review-section {
+                    display: flex;
+                    flex-direction: column;
+                    border-radius: 12px;
+                    background: var(--card-bg, #222);
+                    overflow: hidden;
+                }
+                .review-section .row {
+                    display: grid;
+                    background: var(--card-bg, #222);
+                }
+                .review-section .row-1 {
+                    grid-template-columns: 1fr 2fr;
+                }
+                .review-section .row-2 {
+                    grid-template-columns: 1fr 1fr;
+                    border-top: 3px solid #fff;
+                }
+                .review-section .cell {
+                    padding: 1.2rem;
+                    min-height: 120px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--primary-text, #fff);
+                    background: var(--card-bg, #222);
+                    border: none;
+                    border-radius: 0;
+                    font-size: 1.1rem;
+                }
+                .review-section .row .cell:not(:last-child) {
+                    border-right: 3px solid #fff;
+                }
+            </style>
         </main>
     </div>
 </body>
