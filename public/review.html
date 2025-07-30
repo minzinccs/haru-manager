@@ -30,8 +30,6 @@
         </aside>
         <main class="main-content">
             <div class="review-section">
-                <div class="cell cell-1-1">Ô 1 (1 phần)</div>
-            <div class="review-section">
                 <div class="row row-1">
                     <div class="cell cell-1-1">Ô 1 (1 phần)</div>
                     <div class="cell cell-1-2">Ô 2 (2 phần)</div>
@@ -57,9 +55,9 @@
                 .review-section {
                     display: flex;
                     flex-direction: column;
-                    width: 93vw;
-                    max-width: 1500px;
-                    height: 87vh;
+                    width: 90vw;
+                    max-width: 1200px;
+                    height: 80vh;
                     background: var(--card-bg, #222);
                     border-radius: 0;
                     overflow: hidden;
@@ -70,7 +68,7 @@
                     height: 50%;
                 }
                 .review-section .row-1 {
-                    grid-template-columns: 1fr 2fr;
+                    grid-template-columns: 33% 67%;
                 }
                 .review-section .row-2 {
                     grid-template-columns: 1fr 1fr;
@@ -89,14 +87,16 @@
                     height: 100%;
                     width: 100%;
                 }
-                /* Đường kẻ trắng xám giữa các ô */
-                .review-section .row-1 .cell-1-1,
-                .review-section .row-2 .cell-2-1 {
-                    border-right: 3px solid #e0e0e0;
+                /* Đường viền trắng ngăn cách giữa các ô, không lặp lại */
+                .review-section .row-1 .cell-1-1 {
+                    border-right: 3px solid #fff;
+                    border-bottom: 3px solid #fff;
                 }
-                .review-section .row-1 .cell-1-1,
                 .review-section .row-1 .cell-1-2 {
-                    border-bottom: 3px solid #e0e0e0;
+                    border-bottom: 3px solid #fff;
+                }
+                .review-section .row-2 .cell-2-1 {
+                    border-right: 3px solid #fff;
                 }
                 @media (max-width: 900px) {
                     .review-section {
