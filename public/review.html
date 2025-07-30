@@ -30,60 +30,61 @@
         </aside>
         <main class="main-content">
             <div class="review-section">
-                <div class="row row-1">
-                    <div class="cell cell-1-1">Ô 1 (1 phần)</div>
-                    <div class="cell cell-1-2">Ô 2 (2 phần)</div>
-                </div>
-                <div class="row row-2">
-                    <div class="cell cell-2-1">Ô 1 (1 phần)</div>
-                    <div class="cell cell-2-2">Ô 2 (1 phần)</div>
-                </div>
+                <div class="cell cell-1-1">Ô 1 (1 phần)</div>
+                <div class="cell cell-1-2">Ô 2 (2 phần)</div>
+                <div class="cell cell-2-1">Ô 1 (1 phần)</div>
+                <div class="cell cell-2-2">Ô 2 (1 phần)</div>
             </div>
             <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                .main-content {
+                    height: 100vh;
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: stretch;
+                    justify-content: center;
+                }
                 .review-section {
                     display: grid;
+                    width: 100%;
+                    height: 100vh;
                     grid-template-columns: 1fr 2fr;
                     grid-template-rows: 1fr 1fr;
-                    border-radius: 12px;
                     background: var(--card-bg, #222);
+                    border-radius: 0;
                     overflow: hidden;
                 }
-
                 .review-section .cell {
-                    padding: 1.2rem;
-                    min-height: 120px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     color: var(--primary-text, #fff);
                     background: var(--card-bg, #222);
+                    font-size: 1.1rem;
                     border: none;
                     border-radius: 0;
-                    font-size: 1.1rem;
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    width: 100%;
                 }
-
-                /* Đường kẻ trắng giữa các ô trong hàng */
-                .review-section .cell:nth-child(1),
-                .review-section .cell:nth-child(3) {
-                    border-right: 3px solid #fff;
+                .review-section .cell-1-1 {
+                    grid-column: 1;
+                    grid-row: 1;
                 }
-
-                /* Đường kẻ trắng giữa 2 hàng */
-                .review-section .cell:nth-child(3),
-                .review-section .cell:nth-child(4) {
-                    border-top: 3px solid #fff;
+                .review-section .cell-1-2 {
+                    grid-column: 2;
+                    grid-row: 1;
                 }
-
-                /* Hàng 2 tỉ lệ 1-1 */
-                .review-section {
-                    grid-template-columns: 1fr 2fr;
-                    grid-template-rows: 1fr 1fr;
-                }
-                .review-section .cell:nth-child(3) {
+                .review-section .cell-2-1 {
                     grid-column: 1;
                     grid-row: 2;
                 }
-                .review-section .cell:nth-child(4) {
+                .review-section .cell-2-2 {
                     grid-column: 2;
                     grid-row: 2;
                 }
