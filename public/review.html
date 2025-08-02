@@ -42,6 +42,9 @@
                         <span>🔄</span>
                     </button>
                     <input class="search-input" id="search-input" type="text" placeholder="Tìm kiếm tên ảnh..." />
+                    <button class="square-btn" id="random-btn" title="Random ảnh chưa duyệt">
+                        <span>🎲</span>
+                    </button>
                 </div>
                 <div class="cell cell-1-1">
                     <img id="preview-img" src="" alt="Ảnh đang truy vấn" style="max-width: 100%; max-height: 100%; display: block; margin: auto;" />
@@ -120,7 +123,7 @@
                     background: #444;
                 }
                 .search-input {
-                    flex: 1;
+                    width: 220px;
                     height: 36px;
                     margin-left: 12px;
                     border: 2px solid #e0e0e0;

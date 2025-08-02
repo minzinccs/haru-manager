@@ -64,10 +64,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const randomBtn = document.getElementById('random-btn');
     if (searchBtn && searchInputBar) {
         searchBtn.addEventListener('click', searchAndShowImage);
         searchInputBar.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') searchAndShowImage();
+        });
+    }
+    if (randomBtn) {
+        randomBtn.addEventListener('click', async () => {
+            const imageListDiv = document.getElementById('image-list');
+            try {
+                const params = new URLSearchParams();
+                params.append('status', 'unverified');
+                const response = await fetch(`/api/images?${params.toString()}`);
+                if (!response.ok) throw new Error('Lỗi mạng');
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const pick = data[Math.floor(Math.random() * data.length)];
+                    previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
+                    previewImg.alt = pick.filename;
+                    // Hiển thị danh sách ảnh, highlight ảnh random
+                    if (imageListDiv) {
+                        imageListDiv.innerHTML = data.map(item => `
+                            <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;${item.id===pick.id?'background:#222;':''}">
+                                <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
+                                <div style="flex:1;">
+                                    <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
+                                    <div style="color:#aaa;font-size:13px;">
+                                        ${item.data?.type ? `Type: ${item.data.type}` : ''} 
+                                        ${item.data?.score !== undefined ? `| Điểm: ${item.data.score}` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                } else {
+                    previewImg.src = '';
+                    previewImg.alt = 'Không tìm thấy ảnh chưa duyệt';
+                    if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Không tìm thấy ảnh chưa duyệt.</div>';
+                }
+            } catch (e) {
+                previewImg.src = '';
+                previewImg.alt = 'Lỗi khi random ảnh';
+                if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Lỗi khi random ảnh.</div>';
+            }
         });
     }
 
