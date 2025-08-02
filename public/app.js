@@ -15,6 +15,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentEditingId = null;
 
+    // --- SEARCH ẢNH THỦ CÔNG ---
+    const searchBtn = document.getElementById('search-btn');
+    const searchInputBar = document.getElementById('search-input');
+    const previewImg = document.getElementById('preview-img');
+
+    async function searchAndShowImage() {
+        const searchTerm = searchInputBar.value.trim();
+        try {
+            const params = new URLSearchParams();
+            params.append('status', 'all');
+            if (searchTerm) params.append('search', searchTerm);
+            const response = await fetch(`/api/images?${params.toString()}`);
+            if (!response.ok) throw new Error('Lỗi mạng');
+            const data = await response.json();
+            if (data && data.length > 0) {
+                // Hiển thị ảnh đầu tiên
+                previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${data[0].filename}`;
+                previewImg.alt = data[0].filename;
+            } else {
+                previewImg.src = '';
+                previewImg.alt = 'Không tìm thấy ảnh';
+            }
+        } catch (e) {
+            previewImg.src = '';
+            previewImg.alt = 'Lỗi khi tìm ảnh';
+        }
+    }
+
+    if (searchBtn && searchInputBar) {
+        searchBtn.addEventListener('click', searchAndShowImage);
+        searchInputBar.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') searchAndShowImage();
+        });
+    }
+
     // --- API Functions (sẽ được thay thế bằng Cloudflare Functions) ---
 
     async function fetchData(status = 'unverified', searchTerm = '') {
