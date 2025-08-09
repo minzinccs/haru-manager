@@ -33,10 +33,10 @@ export async function onRequest(context) {
             const stmt = db.prepare(query).bind(...params);
             const { results } = await stmt.all();
             
-            // Parse chuỗi JSON trong cột 'data' thành object
+// Parse chuỗi JSON trong cột 'data' thành object
             const data = results.map(item => ({
                 ...item,
-                data: JSON.parse(item.data)
+                data: item.data ? JSON.parse(item.data) : {}
             }));
 
             return new Response(JSON.stringify(data), {
