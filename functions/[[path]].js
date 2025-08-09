@@ -48,6 +48,49 @@ export async function onRequest(context) {
         }
     }
 
+    // Endpoint để kiểm tra trạng thái database
+    if (request.method === 'GET' && path === '/api/status') {
+        try {
+            // Kiểm tra xem bảng curation_pool có tồn tại không
+            const checkTable = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='curation_pool'");
+            const tableExists = await checkTable.first();
+            
+            if (!tableExists) {
+                return new Response(JSON.stringify({ 
+                    status: 'missing_table',
+                    message: "Bảng curation_pool chưa tồn tại. Vui lòng chạy setup trước."
+                }), {
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
+
+            // Đếm số lượng bản ghi
+            const countQuery = db.prepare("SELECT COUNT(*) as count FROM curation_pool");
+            const countResult = await countQuery.first();
+            const totalCount = countResult.count;
+
+            // Đếm theo status
+            const statusQuery = db.prepare("SELECT status, COUNT(*) as count FROM curation_pool GROUP BY status");
+            const statusResults = await statusQuery.all();
+
+            return new Response(JSON.stringify({ 
+                status: 'ok',
+                table_exists: true,
+                total_count: totalCount,
+                status_breakdown: statusResults.results
+            }), {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+        } catch (e) {
+            console.error("Lỗi khi kiểm tra status:", e);
+            return new Response(JSON.stringify({ error: e.message }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+    }
+
     if (request.method === 'GET' && path.startsWith('/api/images')) {
         try {
             const status = url.searchParams.get('status') || 'unverified';
@@ -64,9 +107,13 @@ export async function onRequest(context) {
                 params.push(status, `%${searchTerm}%`);
             }
 
+            console.log('Executing query:', query, 'with params:', params);
+
             const stmt = db.prepare(query).bind(...params);
             const { results } = await stmt.all();
             
+            console.log('Query results:', results);
+
             // Parse chuỗi JSON trong cột 'data' thành object
             const data = results.map(item => ({
                 ...item,

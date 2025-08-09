@@ -71,6 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Function để kiểm tra trạng thái database
+    async function checkDatabaseStatus() {
+        try {
+            const response = await fetch('/api/status');
+            const result = await response.json();
+            return result;
+        } catch (e) {
+            console.error('Error checking database status:', e);
+            return { error: e.message };
+        }
+    }
+
     // Function để setup database
     async function setupDatabase() {
         try {
@@ -87,6 +99,27 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error setting up database:', e);
             return false;
         }
+    }
+
+    // Thêm event listener cho nút status
+    const statusBtn = document.getElementById('status-btn');
+    if (statusBtn) {
+        statusBtn.addEventListener('click', async () => {
+            try {
+                const status = await checkDatabaseStatus();
+                if (status.error) {
+                    alert('❌ Lỗi khi kiểm tra database: ' + status.error);
+                } else if (status.status === 'missing_table') {
+                    alert('⚠️ Bảng curation_pool chưa tồn tại. Vui lòng chạy setup trước.');
+                } else {
+                    const breakdown = status.status_breakdown || [];
+                    const breakdownText = breakdown.map(item => `${item.status}: ${item.count}`).join(', ');
+                    alert(`✅ Database OK\n📊 Tổng số: ${status.total_count}\n📈 Chi tiết: ${breakdownText || 'Không có dữ liệu'}`);
+                }
+            } catch (e) {
+                alert('❌ Lỗi khi kiểm tra database: ' + e.message);
+            }
+        });
     }
 
     // Thêm event listener cho nút setup
@@ -159,40 +192,33 @@ document.addEventListener('DOMContentLoaded', () => {
         randomBtn.addEventListener('click', async () => {
             const imageListDiv = document.getElementById('image-list');
             try {
+                // Kiểm tra trạng thái database trước
+                const dbStatus = await checkDatabaseStatus();
+                
+                if (dbStatus.error) {
+                    throw new Error('Lỗi kết nối database');
+                }
+                
+                if (dbStatus.status === 'missing_table') {
+                    // Bảng chưa tồn tại, tạo bảng
+                    const setupSuccess = await setupDatabase();
+                    if (!setupSuccess) {
+                        throw new Error('Không thể tạo bảng database');
+                    }
+                }
+                
+                if (dbStatus.total_count === 0) {
+                    // Không có dữ liệu
+                    previewImg.src = '';
+                    previewImg.alt = 'Không có ảnh nào trong database';
+                    if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Database đang trống. Vui lòng upload JSON hoặc thêm dữ liệu trước.</div>';
+                    return;
+                }
+
                 const params = new URLSearchParams();
                 params.append('status', 'unverified');
                 const response = await fetch(`/api/images?${params.toString()}`);
                 if (!response.ok) {
-                    // Nếu có lỗi, thử setup database
-                    if (response.status === 500) {
-                        const setupSuccess = await setupDatabase();
-                        if (setupSuccess) {
-                            // Thử lại sau khi setup
-                            const retryResponse = await fetch(`/api/images?${params.toString()}`);
-                            if (!retryResponse.ok) throw new Error('Lỗi mạng');
-                            const data = await retryResponse.json();
-                            if (data && data.length > 0) {
-                                const pick = data[Math.floor(Math.random() * data.length)];
-                                previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
-                                previewImg.alt = pick.filename;
-                                if (imageListDiv) {
-                                    imageListDiv.innerHTML = data.map(item => `
-                                        <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;${item.id===pick.id?'background:#222;':''}">
-                                            <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
-                                            <div style="flex:1;">
-                                                <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
-                                                <div style="color:#aaa;font-size:13px;">
-                                                    ${item.data?.type ? `Type: ${item.data.type}` : ''} 
-                                                    ${item.data?.score !== undefined ? `| Điểm: ${item.data.score}` : ''}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `).join('');
-                                }
-                                return;
-                            }
-                        }
-                    }
                     throw new Error('Lỗi mạng');
                 }
                 const data = await response.json();
@@ -200,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pick = data[Math.floor(Math.random() * data.length)];
                     previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
                     previewImg.alt = pick.filename;
-                    // Hiển thị danh sách ảnh, highlight ảnh random
                     if (imageListDiv) {
                         imageListDiv.innerHTML = data.map(item => `
                             <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;${item.id===pick.id?'background:#222;':''}">
@@ -224,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error in random button:', e);
                 previewImg.src = '';
                 previewImg.alt = 'Lỗi khi random ảnh';
-                if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Lỗi khi random ảnh. Vui lòng thử lại hoặc liên hệ admin.</div>';
+                if (imageListDiv) imageListDiv.innerHTML = `<div style="color:#aaa;padding:8px;">Lỗi khi random ảnh: ${e.message}. Vui lòng thử lại hoặc liên hệ admin.</div>`;
             }
         });
     }
