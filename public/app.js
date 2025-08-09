@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('data-table-body');
     const statusFilter = document.getElementById('status-filter');
     const searchInput = document.getElementById('search-input');
-    const jsonUpload = document.getElementById('json-upload');
     const modal = document.getElementById('json-editor-modal');
     const closeButton = document.querySelector('.close-button');
     const saveJsonButton = document.getElementById('save-json-button');
@@ -71,6 +70,91 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Enter') searchAndShowImage();
         });
     }
+
+    // Function để setup database
+    async function setupDatabase() {
+        try {
+            const response = await fetch('/api/setup', { method: 'POST' });
+            const result = await response.json();
+            if (result.success) {
+                console.log('Database setup successful:', result.message);
+                return true;
+            } else {
+                console.error('Database setup failed:', result.error);
+                return false;
+            }
+        } catch (e) {
+            console.error('Error setting up database:', e);
+            return false;
+        }
+    }
+
+    // Thêm event listener cho nút setup
+    const setupBtn = document.getElementById('setup-btn');
+    if (setupBtn) {
+        setupBtn.addEventListener('click', async () => {
+            try {
+                const success = await setupDatabase();
+                if (success) {
+                    alert('✅ Database đã được setup thành công!');
+                } else {
+                    alert('❌ Lỗi khi setup database. Vui lòng thử lại.');
+                }
+            } catch (e) {
+                console.error('Setup error:', e);
+                alert('❌ Lỗi khi setup database: ' + e.message);
+            }
+        });
+    }
+
+    // Thêm event listener cho nút upload JSON
+    const uploadBtn = document.getElementById('upload-btn');
+    const jsonUpload = document.getElementById('json-upload');
+    
+    if (uploadBtn && jsonUpload) {
+        uploadBtn.addEventListener('click', () => {
+            jsonUpload.click();
+        });
+
+        jsonUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                const jsonData = JSON.parse(text);
+                
+                if (!Array.isArray(jsonData)) {
+                    alert('❌ File JSON phải chứa một mảng dữ liệu.');
+                    return;
+                }
+
+                // Gửi dữ liệu lên server
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`✅ Upload thành công ${jsonData.length} ảnh!`);
+                    // Refresh danh sách
+                    if (randomBtn) {
+                        randomBtn.click();
+                    }
+                } else {
+                    alert('❌ Lỗi khi upload: ' + (result.error || 'Unknown error'));
+                }
+            } catch (e) {
+                console.error('Upload error:', e);
+                alert('❌ Lỗi khi đọc file JSON: ' + e.message);
+            }
+        });
+    }
+
     if (randomBtn) {
         randomBtn.addEventListener('click', async () => {
             const imageListDiv = document.getElementById('image-list');
@@ -78,7 +162,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 const params = new URLSearchParams();
                 params.append('status', 'unverified');
                 const response = await fetch(`/api/images?${params.toString()}`);
-                if (!response.ok) throw new Error('Lỗi mạng');
+                if (!response.ok) {
+                    // Nếu có lỗi, thử setup database
+                    if (response.status === 500) {
+                        const setupSuccess = await setupDatabase();
+                        if (setupSuccess) {
+                            // Thử lại sau khi setup
+                            const retryResponse = await fetch(`/api/images?${params.toString()}`);
+                            if (!retryResponse.ok) throw new Error('Lỗi mạng');
+                            const data = await retryResponse.json();
+                            if (data && data.length > 0) {
+                                const pick = data[Math.floor(Math.random() * data.length)];
+                                previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
+                                previewImg.alt = pick.filename;
+                                if (imageListDiv) {
+                                    imageListDiv.innerHTML = data.map(item => `
+                                        <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;${item.id===pick.id?'background:#222;':''}">
+                                            <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
+                                            <div style="flex:1;">
+                                                <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
+                                                <div style="color:#aaa;font-size:13px;">
+                                                    ${item.data?.type ? `Type: ${item.data.type}` : ''} 
+                                                    ${item.data?.score !== undefined ? `| Điểm: ${item.data.score}` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `).join('');
+                                }
+                                return;
+                            }
+                        }
+                    }
+                    throw new Error('Lỗi mạng');
+                }
                 const data = await response.json();
                 if (data && data.length > 0) {
                     const pick = data[Math.floor(Math.random() * data.length)];
@@ -102,12 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     previewImg.src = '';
                     previewImg.alt = 'Không tìm thấy ảnh chưa duyệt';
-                    if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Không tìm thấy ảnh chưa duyệt.</div>';
+                    if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Không tìm thấy ảnh chưa duyệt. Có thể bảng curation_pool đang trống hoặc chưa có ảnh nào có status="unverified".</div>';
                 }
             } catch (e) {
+                console.error('Error in random button:', e);
                 previewImg.src = '';
                 previewImg.alt = 'Lỗi khi random ảnh';
-                if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Lỗi khi random ảnh.</div>';
+                if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Lỗi khi random ảnh. Vui lòng thử lại hoặc liên hệ admin.</div>';
             }
         });
     }

@@ -14,6 +14,40 @@ export async function onRequest(context) {
 
     // --- Xử lý các phương thức HTTP ---
 
+    // Endpoint để tạo bảng curation_pool
+    if (request.method === 'POST' && path === '/api/setup') {
+        try {
+            const statements = [
+                `CREATE TABLE IF NOT EXISTS curation_pool (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    filename TEXT NOT NULL,
+                    data TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'unverified'
+                );`,
+                `CREATE INDEX IF NOT EXISTS idx_curation_status ON curation_pool (status);`,
+                `CREATE INDEX IF NOT EXISTS idx_curation_filename ON curation_pool (filename);`
+            ];
+
+            for (const sql of statements) {
+                const stmt = db.prepare(sql);
+                await stmt.run();
+            }
+
+            return new Response(JSON.stringify({ 
+                success: true, 
+                message: "✅ Đã tạo thành công bảng `curation_pool` và các chỉ mục cần thiết." 
+            }), {
+                headers: { 'Content-Type': 'application/json' },
+            });
+        } catch (e) {
+            console.error("Lỗi khi thiết lập DB:", e);
+            return new Response(JSON.stringify({ error: e.message }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+    }
+
     if (request.method === 'GET' && path.startsWith('/api/images')) {
         try {
             const status = url.searchParams.get('status') || 'unverified';
@@ -33,7 +67,7 @@ export async function onRequest(context) {
             const stmt = db.prepare(query).bind(...params);
             const { results } = await stmt.all();
             
-// Parse chuỗi JSON trong cột 'data' thành object
+            // Parse chuỗi JSON trong cột 'data' thành object
             const data = results.map(item => ({
                 ...item,
                 data: item.data ? JSON.parse(item.data) : {}
@@ -60,7 +94,7 @@ export async function onRequest(context) {
             }
 
             const stmts = jsonData.map(item => {
-                const filename = item.original_filename;
+                const filename = item.new_filename || item.original_filename;
                 const data = JSON.stringify(item);
                 return db.prepare("INSERT INTO curation_pool (filename, data, status) VALUES (?, ?, 'unverified')").bind(filename, data);
             });
@@ -93,15 +127,28 @@ export async function onRequest(context) {
             if (body.status) {
                 // Cập nhật trạng thái
                 stmt = db.prepare("UPDATE curation_pool SET status = ? WHERE id = ?").bind(body.status, id);
+                await stmt.run();
+                
+                // Đồng bộ status sang bảng images
+                const imageStmt = db.prepare(`
+                    UPDATE images 
+                    SET status = ? 
+                    WHERE file_name = (
+                        SELECT filename 
+                        FROM curation_pool 
+                        WHERE id = ?
+                    )
+                `).bind(body.status, id);
+                await imageStmt.run();
+                
             } else if (body.data) {
                 // Cập nhật dữ liệu JSON
                 const jsonDataString = JSON.stringify(body.data);
                 stmt = db.prepare("UPDATE curation_pool SET data = ? WHERE id = ?").bind(jsonDataString, id);
+                await stmt.run();
             } else {
                 return new Response(JSON.stringify({ error: 'Không có dữ liệu hợp lệ để cập nhật.' }), { status: 400 });
             }
-
-            await stmt.run();
 
             return new Response(JSON.stringify({ success: true, message: `Cập nhật thành công ID ${id}.` }), {
                 headers: { 'Content-Type': 'application/json' },
@@ -115,7 +162,6 @@ export async function onRequest(context) {
             });
         }
     }
-
 
     // Nếu không phải là một route API đã biết, chuyển yêu cầu cho Pages
     // để nó có thể phục vụ các tệp tĩnh như index.html
