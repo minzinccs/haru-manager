@@ -9,6 +9,21 @@ export async function onRequest(context) {
     // Ví dụ: /api/images, /api/images/123, ...
     const path = url.pathname;
 
+    // Optional auth guard for API routes (enable by setting REQUIRE_AUTH="true" and ADMIN_TOKEN as a secret)
+    if (path.startsWith('/api/')) {
+        const authRequired = env && env.REQUIRE_AUTH === 'true';
+        if (authRequired) {
+            const authHeader = request.headers.get('authorization') || '';
+            const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+            if (!env.ADMIN_TOKEN || token !== env.ADMIN_TOKEN) {
+                return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+                    status: 401,
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
+        }
+    }
+
     // Lấy D1 binding từ biến môi trường
     const db = env.DB;
     
@@ -257,16 +272,23 @@ export async function onRequest(context) {
                 await stmt.run();
                 
                 // Đồng bộ status sang bảng images
-                const imageStmt = db.prepare(`
-                    UPDATE images 
-                    SET status = ? 
-                    WHERE file_name = (
-                        SELECT filename 
-                        FROM curation_pool 
-                        WHERE id = ?
-                    )
-                `).bind(body.status, id);
-                await imageStmt.run();
+                try {
+                    const imgTbl = await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='images'").first();
+                    if (imgTbl) {
+                        const imageStmt = db.prepare(`
+                            UPDATE images 
+                            SET status = ? 
+                            WHERE file_name = (
+                                SELECT filename 
+                                FROM curation_pool 
+                                WHERE id = ?
+                            )
+                        `).bind(body.status, id);
+                        await imageStmt.run();
+                    }
+                } catch (err) {
+                    console.warn('Skip syncing to images table:', err?.message || err);
+                }
                 
             } else if (body.data) {
                 // Cập nhật dữ liệu JSON

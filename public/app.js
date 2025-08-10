@@ -257,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- API Functions (sẽ được thay thế bằng Cloudflare Functions) ---
 
     async function fetchData(status = 'unverified', searchTerm = '') {
+        if (!tableBody) return;
         tableBody.innerHTML = '<tr><td colspan="5">Đang tải dữ liệu...</td></tr>';
         try {
             // Xây dựng URL với các tham số truy vấn
@@ -293,8 +294,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Lỗi khi cập nhật trạng thái:', error);
             alert('Cập nhật trạng thái thất bại.');
-            // Tải lại để đồng bộ
-            fetchData(statusFilter.value, searchInput.value);
+            // Tải lại để đồng bộ (nếu có bảng)
+            const statusVal = statusFilter ? statusFilter.value : 'unverified';
+            const searchVal = searchInput ? searchInput.value : '';
+            fetchData(statusVal, searchVal);
         }
     }
 
@@ -309,8 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Cập nhật JSON thất bại.');
             }
             closeModal();
-            // Tải lại dữ liệu để thấy thay đổi
-            fetchData(statusFilter.value, searchInput.value);
+            // Tải lại dữ liệu để thấy thay đổi (nếu có bảng)
+            const statusVal = statusFilter ? statusFilter.value : 'unverified';
+            const searchVal = searchInput ? searchInput.value : '';
+            fetchData(statusVal, searchVal);
         } catch (error) {
             console.error('Lỗi khi cập nhật JSON:', error);
             alert('Cập nhật JSON thất bại.');
@@ -382,63 +387,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-    });
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+    }
 
-    statusFilter.addEventListener('change', () => {
-        fetchData(statusFilter.value, searchInput.value);
-    });
+    if (statusFilter) {
+        statusFilter.addEventListener('change', () => {
+            const searchVal = searchInput ? searchInput.value : '';
+            fetchData(statusFilter.value, searchVal);
+        });
+    }
 
-    searchInput.addEventListener('input', () => {
-        // Đơn giản là lọc lại sau mỗi lần gõ, hoặc có thể thêm debounce
-        fetchData(statusFilter.value, searchInput.value);
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            // Đơn giản là lọc lại sau mỗi lần gõ, hoặc có thể thêm debounce
+            const statusVal = statusFilter ? statusFilter.value : 'unverified';
+            fetchData(statusVal, searchInput.value);
+        });
+    }
     
-    jsonUpload.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file && file.type === "application/json") {
-            uploadJsonFile(file);
-        } else {
-            alert("Vui lòng chọn một tệp JSON hợp lệ.");
-        }
-    });
+    // Removed duplicate jsonUpload change handler (handled earlier)
 
-    tableBody.addEventListener('change', (event) => {
-        if (event.target.classList.contains('status-select')) {
-            const id = event.target.dataset.id;
-            const newStatus = event.target.value;
-            updateStatus(id, newStatus);
-        }
-    });
+    if (tableBody) {
+        tableBody.addEventListener('change', (event) => {
+            if (event.target.classList.contains('status-select')) {
+                const id = event.target.dataset.id;
+                const newStatus = event.target.value;
+                updateStatus(id, newStatus);
+            }
+        });
+    }
 
-    tableBody.addEventListener('click', (event) => {
-        if (event.target.classList.contains('edit-btn')) {
-            const row = event.target.closest('tr');
-            currentEditingId = row.dataset.id;
-            const jsonData = row.dataset.jsonData;
-            jsonEditorTextarea.value = jsonData;
-            openModal();
-        }
-    });
+    if (tableBody) {
+        tableBody.addEventListener('click', (event) => {
+            if (event.target.classList.contains('edit-btn')) {
+                const row = event.target.closest('tr');
+                currentEditingId = row.dataset.id;
+                const jsonData = row.dataset.jsonData;
+                if (jsonEditorTextarea) jsonEditorTextarea.value = jsonData;
+                openModal();
+            }
+        });
+    }
 
-    // Modal listeners
-    closeButton.addEventListener('click', closeModal);
-    cancelJsonButton.addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
+    // Modal listeners (only if modal elements exist)
+    if (modal && closeButton && cancelJsonButton && saveJsonButton && jsonEditorTextarea) {
+        closeButton.addEventListener('click', closeModal);
+        cancelJsonButton.addEventListener('click', closeModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
 
-    saveJsonButton.addEventListener('click', () => {
-        try {
-            const updatedJson = JSON.parse(jsonEditorTextarea.value);
-            updateJsonData(currentEditingId, updatedJson);
-        } catch (error) {
-            alert("Lỗi cú pháp JSON. Vui lòng kiểm tra lại.");
-        }
-    });
+        saveJsonButton.addEventListener('click', () => {
+            try {
+                const updatedJson = JSON.parse(jsonEditorTextarea.value);
+                updateJsonData(currentEditingId, updatedJson);
+            } catch (error) {
+                alert("Lỗi cú pháp JSON. Vui lòng kiểm tra lại.");
+            }
+        });
+    }
 
     function openModal() {
         modal.style.display = 'flex';
@@ -450,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Load ---
-    // Thiết lập trạng thái ban đầu bằng cách kích hoạt sự kiện click
-    sidebarToggle.click();
-    fetchData();
+    // Thiết lập trạng thái ban đầu
+    if (sidebarToggle) sidebarToggle.click();
+    if (tableBody) fetchData();
 });

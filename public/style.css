@@ -1,6 +1,8 @@
+/* Review section layout */
 .review-section {
     display: flex;
     flex-direction: column;
+    gap: 0;
     margin-top: 2rem;
     border: 2.5px solid var(--sidebar-border);
     border-radius: 10px;
@@ -13,82 +15,16 @@
 }
 .review-section .row-1 {
     grid-template-columns: 1fr 2fr;
-    border-bottom: none;
-}
-.review-section .row-2 {
-    border-top: 2.5px solid var(--sidebar-border); /* Đường kẻ ngang giữa 2 hàng giống border giữa các ô */
-    grid-template-columns: 1fr 1fr;
-}
-.review-section .cell {
-    background: var(--card-bg);
-    border: none;
-    border-radius: 0;
-    padding: 1.2rem;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: var(--primary-text);
-    box-shadow: none;
-}
-/* Review section layout - tối ưu border */
-.review-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-top: 2rem;
-    border: 2.5px solid var(--sidebar-border); /* Bo viền 4 cạnh rõ hơn */
-    border-radius: 10px;
-    background: var(--card-bg);
-    overflow: hidden;
-}
-.review-section .row {
-    display: grid;
-    gap: 0;
-}
-.review-section .row-1 {
-    grid-template-columns: 1fr 2fr;
-    border-bottom: 4px solid var(--sidebar-border); /* Đường kẻ ngang rõ hơn giữa 2 hàng */
+    border-bottom: 2.5px solid var(--sidebar-border);
 }
 .review-section .row-2 {
     grid-template-columns: 1fr 1fr;
 }
 .review-section .row-1 .cell-1-1 {
-    border-right: 2.5px solid var(--sidebar-border); /* Đường kẻ dọc giữa 2 ô hàng 1 */
+    border-right: 2.5px solid var(--sidebar-border);
 }
 .review-section .row-2 .cell-2-1 {
-    border-right: 2.5px solid var(--sidebar-border); /* Đường kẻ dọc giữa 2 ô hàng 2 */
-}
-.review-section .cell {
-    background: var(--card-bg);
-    border: none;
-    border-radius: 0;
-    padding: 1.2rem;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: var(--primary-text);
-    box-shadow: none;
-}
-/* Review section layout */
-.review-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    margin-top: 2rem;
-}
-.review-section .row {
-    display: grid;
-    gap: 0;
-}
-.review-section .row-1 {
-    grid-template-columns: 1fr 2fr;
-}
-.review-section .row-2 {
-    grid-template-columns: 1fr 1fr;
+    border-right: 2.5px solid var(--sidebar-border);
 }
 .review-section .cell {
     background: var(--card-bg);
@@ -104,17 +40,8 @@
     box-shadow: none;
     position: relative;
 }
-/* Vạch kẻ dọc giữa các ô hàng 1 */
-.review-section .row-1 .cell-1-1 {
-    border-right: 1.5px solid var(--card-border);
-}
-.review-section .row-1 .cell-1-2 {
-    border-left: none;
-}
-/* Vạch kẻ ngang giữa các ô hàng 2 */
-.review-section .row-2 .cell-2-1 {
-    border-right: 1.5px solid var(--card-border);
-}
+/* Vạch kẻ */
+.review-section .row-1 .cell-1-2,
 .review-section .row-2 .cell-2-2 {
     border-left: none;
 }
