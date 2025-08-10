@@ -36,80 +36,29 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-title">Tổng số ảnh</div>
-                    <div class="stat-value">0</div>
+                    <div class="stat-value" id="total-images">0</div>
                     <div class="stat-desc">Ảnh đã upload</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Dung lượng</div>
-                    <div class="stat-value">0 MB</div>
+                    <div class="stat-value" id="total-size">0 MB</div>
                     <div class="stat-desc">Đã sử dụng</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Ảnh chờ duyệt</div>
-                    <div class="stat-value">0</div>
+                    <div class="stat-value" id="pending-images">0</div>
                     <div class="stat-desc">Chưa kiểm duyệt</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Ảnh bị từ chối</div>
-                    <div class="stat-value">0</div>
+                    <div class="stat-value" id="rejected-images">0</div>
                     <div class="stat-desc">Rejected</div>
                 </div>
             </div>
-            <div class="review-section">
-                <div class="row-1">
-                    <div class="cell-1-1">Nội dung cần kiểm duyệt</div>
-                    <div class="cell-1-2">Thông tin chi tiết</div>
-                </div>
-                <div class="row-2">
-                    <div class="cell-2-1">Ảnh 1</div>
-                    <div class="cell-2-2">Đã duyệt</div>
-                </div>
-                <div class="row-2">
-                    <div class="cell-2-1">Ảnh 2</div>
-                    <div class="cell-2-2">Chờ duyệt</div>
-                </div>
-            </div>
+
         </main>
     </div>
-    <style>
-        .review-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 20px;
-        }
 
-        .review-section .row-1 {
-            display: contents;
-        }
-
-        .review-section .row-2 {
-            display: contents;
-        }
-
-        .review-section .cell-1-1,
-        .review-section .cell-1-2,
-        .review-section .cell-2-1,
-        .review-section .cell-2-2 {
-            padding: 10px;
-            border: 2.5px solid transparent;
-        }
-
-        .review-section .cell-1-1 {
-            background-color: var(--header-bg);
-            font-weight: bold;
-        }
-
-        .review-section .cell-1-1,
-        .review-section .cell-2-1 {
-            border-right: 2.5px solid var(--sidebar-border);
-        }
-
-        /* Border ngang giữa các hàng: đặt border-top cho từng cell của row-2 */
-        .review-section .cell-2-1,
-        .review-section .cell-2-2 {
-            border-top: 2.5px solid var(--sidebar-border);
-        }
-    </style>
+    <script src="/app.js"></script>
 </body>
 </html>

@@ -12,7 +12,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelJsonButton = document.getElementById('cancel-json-button');
     const jsonEditorTextarea = document.getElementById('json-editor-textarea');
 
+    // Dashboard elements
+    const totalImages = document.getElementById('total-images');
+    const totalSize = document.getElementById('total-size');
+    const pendingImages = document.getElementById('pending-images');
+    const rejectedImages = document.getElementById('rejected-images');
+
     let currentEditingId = null;
+
+    // --- DASHBOARD FUNCTIONS ---
+    async function loadDashboardData() {
+        try {
+            // Load status data
+            const statusResponse = await fetch('/api/status');
+            const statusData = await statusResponse.json();
+            
+            if (statusData.status === 'ok') {
+                // Update stats
+                if (totalImages) totalImages.textContent = statusData.total_count || 0;
+                if (pendingImages) {
+                    const pendingCount = statusData.status_breakdown?.find(item => item.status === 'unverified')?.count || 0;
+                    pendingImages.textContent = pendingCount;
+                }
+                if (rejectedImages) {
+                    const rejectedCount = statusData.status_breakdown?.find(item => item.status === 'rejected')?.count || 0;
+                    rejectedImages.textContent = rejectedCount;
+                }
+                if (totalSize) totalSize.textContent = '0 MB'; // TODO: Calculate from R2
+
+
+            } else if (statusData.status === 'missing_table') {
+                console.log('Database table not found, need setup');
+
+            }
+        } catch (error) {
+            console.error('Error loading dashboard data:', error);
+
+        }
+    }
+
+
 
     // --- SEARCH ẢNH THỦ CÔNG ---
     const searchBtn = document.getElementById('search-btn');
@@ -465,4 +504,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Thiết lập trạng thái ban đầu
     if (sidebarToggle) sidebarToggle.click();
     if (tableBody) fetchData();
+    if (totalImages) loadDashboardData(); // Load dashboard data on initial load
 });

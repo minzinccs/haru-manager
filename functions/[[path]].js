@@ -187,6 +187,7 @@ export async function onRequest(context) {
 
             const status = url.searchParams.get('status') || 'unverified';
             const searchTerm = url.searchParams.get('search') || '';
+            const limit = url.searchParams.get('limit') || '';
 
             let query;
             let params = [];
@@ -197,6 +198,11 @@ export async function onRequest(context) {
             } else {
                 query = "SELECT id, filename, status, data FROM curation_pool WHERE status = ? AND filename LIKE ? ORDER BY id DESC";
                 params.push(status, `%${searchTerm}%`);
+            }
+
+            // Add LIMIT if specified
+            if (limit && !isNaN(parseInt(limit))) {
+                query += ` LIMIT ${parseInt(limit)}`;
             }
 
             console.log('Executing query:', query, 'with params:', params);
