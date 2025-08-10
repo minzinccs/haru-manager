@@ -11,6 +11,17 @@ export async function onRequest(context) {
 
     // Lấy D1 binding từ biến môi trường
     const db = env.DB;
+    
+    // Kiểm tra xem db có tồn tại không
+    if (!db) {
+        console.error("DB binding không tồn tại trong env");
+        return new Response(JSON.stringify({ 
+            error: "Database connection không khả dụng. Vui lòng kiểm tra cấu hình D1 binding." 
+        }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
 
     // --- Xử lý các phương thức HTTP ---
 
@@ -48,9 +59,67 @@ export async function onRequest(context) {
         }
     }
 
+    // Endpoint test đơn giản
+    if (request.method === 'GET' && path === '/api/test') {
+        try {
+            // Test DB
+            if (!db) {
+                return new Response(JSON.stringify({ 
+                    error: "DB binding không tồn tại" 
+                }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
+
+            if (typeof db.prepare !== 'function') {
+                return new Response(JSON.stringify({ 
+                    error: "DB.prepare không phải function" 
+                }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
+
+            // Test R2
+            const r2 = env.R2_BUCKET;
+            const r2Status = r2 ? "R2_BUCKET OK" : "R2_BUCKET missing";
+
+            // Thử query đơn giản
+            const testQuery = db.prepare("SELECT 1 as test");
+            const result = await testQuery.first();
+
+            return new Response(JSON.stringify({ 
+                success: true,
+                message: "Database and R2 connection OK",
+                test_result: result,
+                r2_status: r2Status,
+                env_keys: Object.keys(env)
+            }), {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+        } catch (e) {
+            console.error("Test error:", e);
+            return new Response(JSON.stringify({ 
+                error: e.message,
+                details: "Lỗi khi test database connection",
+                env_keys: Object.keys(env || {})
+            }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+    }
+
     // Endpoint để kiểm tra trạng thái database
     if (request.method === 'GET' && path === '/api/status') {
         try {
+            // Kiểm tra xem db có tồn tại không
+            if (!db || typeof db.prepare !== 'function') {
+                throw new Error('Database connection không hợp lệ');
+            }
+
             // Kiểm tra xem bảng curation_pool có tồn tại không
             const checkTable = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='curation_pool'");
             const tableExists = await checkTable.first();
@@ -84,7 +153,10 @@ export async function onRequest(context) {
 
         } catch (e) {
             console.error("Lỗi khi kiểm tra status:", e);
-            return new Response(JSON.stringify({ error: e.message }), {
+            return new Response(JSON.stringify({ 
+                error: e.message,
+                details: "Lỗi khi truy cập database. Vui lòng kiểm tra cấu hình D1 binding."
+            }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -93,6 +165,11 @@ export async function onRequest(context) {
 
     if (request.method === 'GET' && path.startsWith('/api/images')) {
         try {
+            // Kiểm tra xem db có tồn tại không
+            if (!db || typeof db.prepare !== 'function') {
+                throw new Error('Database connection không hợp lệ');
+            }
+
             const status = url.searchParams.get('status') || 'unverified';
             const searchTerm = url.searchParams.get('search') || '';
 
@@ -126,7 +203,10 @@ export async function onRequest(context) {
 
         } catch (e) {
             console.error("Lỗi D1:", e);
-            return new Response(JSON.stringify({ error: e.message }), {
+            return new Response(JSON.stringify({ 
+                error: e.message,
+                details: "Lỗi khi truy vấn database."
+            }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' },
             });

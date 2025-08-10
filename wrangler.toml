@@ -1,0 +1,12 @@
+name = "haru-manager"
+compatibility_date = "2024-01-01"
+
+# Liên kết với cùng một D1 Database và R2 Bucket của haru-bot
+[[d1_databases]]
+binding = "DB"
+database_name = "haru-main-db"
+database_id = "9224ae25-1875-4d0b-a4a9-9abe6f8be11e"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "haru-images" 
