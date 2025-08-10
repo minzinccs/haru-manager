@@ -1,0 +1,12 @@
+# Cloudflare Wrangler state and dev vars
+.wrangler/
+.dev.vars
+.env
+
+# Dependencies
+node_modules/
+
+# Build outputs
+_dist/
+dist/
+build/
