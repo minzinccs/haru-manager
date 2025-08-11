@@ -267,17 +267,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     previewImg.alt = pick.filename;
                     if (imageListDiv) {
                         imageListDiv.innerHTML = `
-                            <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;background:#222;">
+                            <div class="image-list-item" data-id="${pick.id}" style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;background:#222;cursor:pointer;">
                                 <img src="https://haru-bot.minzinccs1.workers.dev/${pick.filename}" alt="${pick.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
                                 <div style="flex:1;">
                                     <div style="color:#e0e0e0;font-size:15px;">${pick.filename}</div>
                                     <div style="color:#aaa;font-size:13px;">
-                                        ${pick.data?.type ? `Type: ${pick.data.type}` : ''} 
-                                        ${pick.data?.score !== undefined ? `| Điểm: ${pick.data.score}` : ''}
+                                        ${pick.data?.type ? `Type: ${pick.data.type}` : ''}
+                                        | Rating: ${pick.data?.rating ?? pick.data?.score ?? 'null'}
+                                        | Ngày checked: ${pick.data?.checked_date ?? pick.data?.updated_at ?? '-'}
                                     </div>
                                 </div>
                             </div>
                         `;
+                        // Thêm event click cho item
+                        const itemDiv = imageListDiv.querySelector('.image-list-item');
+                        if (itemDiv) {
+                            itemDiv.addEventListener('click', () => {
+                                previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
+                                previewImg.alt = pick.filename;
+                            });
+                        }
                     }
                 } else {
                     previewImg.src = '';
