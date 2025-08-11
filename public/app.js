@@ -266,18 +266,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${pick.filename}`;
                     previewImg.alt = pick.filename;
                     if (imageListDiv) {
-                        imageListDiv.innerHTML = data.map(item => `
-                            <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;${item.id===pick.id?'background:#222;':''}">
-                                <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
+                        imageListDiv.innerHTML = `
+                            <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;background:#222;">
+                                <img src="https://haru-bot.minzinccs1.workers.dev/${pick.filename}" alt="${pick.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
                                 <div style="flex:1;">
-                                    <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
+                                    <div style="color:#e0e0e0;font-size:15px;">${pick.filename}</div>
                                     <div style="color:#aaa;font-size:13px;">
-                                        ${item.data?.type ? `Type: ${item.data.type}` : ''} 
-                                        ${item.data?.score !== undefined ? `| Điểm: ${item.data.score}` : ''}
+                                        ${pick.data?.type ? `Type: ${pick.data.type}` : ''} 
+                                        ${pick.data?.score !== undefined ? `| Điểm: ${pick.data.score}` : ''}
                                     </div>
                                 </div>
                             </div>
-                        `).join('');
+                        `;
                     }
                 } else {
                     previewImg.src = '';
