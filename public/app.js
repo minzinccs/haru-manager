@@ -58,9 +58,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInputBar = document.getElementById('search-input');
     const previewImg = document.getElementById('preview-img');
 
+    // Hàm render image-list dùng chung cho search và random
+    function renderImageList(data, previewImg, highlightId = null) {
+        const imageListDiv = document.getElementById('image-list');
+        if (!imageListDiv) return;
+        if (data && data.length > 0) {
+            imageListDiv.innerHTML = data.map(item => `
+                <div class="image-list-item" data-id="${item.id}" style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;cursor:pointer;${highlightId && item.id === highlightId ? 'background:#222;' : ''}">
+                    <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
+                    <div style="flex:1;">
+                        <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
+                        <div style="color:#aaa;font-size:13px;">
+                            ${item.data?.type ? `Type: ${item.data.type}` : ''}
+                            | Rating: ${item.data?.rating ?? item.data?.score ?? 'null'}
+                            | Ngày checked: ${item.data?.checked_date ?? item.data?.updated_at ?? '-'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            Array.from(imageListDiv.querySelectorAll('.image-list-item')).forEach((div, idx) => {
+                div.addEventListener('click', () => {
+                    const item = data[idx];
+                    previewImg.src = `https://haru-bot.minzinccs1.workers.dev/${item.filename}`;
+                    previewImg.alt = item.filename;
+                });
+            });
+        } else {
+            imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Không tìm thấy ảnh nào.</div>';
+        }
+    }
+
     async function searchAndShowImage() {
         const searchTerm = searchInputBar.value.trim();
-        const imageListDiv = document.getElementById('image-list');
         try {
             const params = new URLSearchParams();
             params.append('status', 'all');
@@ -76,29 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 previewImg.src = '';
                 previewImg.alt = 'Không tìm thấy ảnh';
             }
-            // Hiển thị danh sách ảnh
-            if (imageListDiv) {
-                if (data && data.length > 0) {
-                    imageListDiv.innerHTML = data.map(item => `
-                        <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #444;">
-                            <img src="https://haru-bot.minzinccs1.workers.dev/${item.filename}" alt="${item.filename}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid #555;">
-                            <div style="flex:1;">
-                                <div style="color:#e0e0e0;font-size:15px;">${item.filename}</div>
-                                <div style="color:#aaa;font-size:13px;">
-                                    ${item.data?.type ? `Type: ${item.data.type}` : ''} 
-                                    ${item.data?.score !== undefined ? `| Điểm: ${item.data.score}` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Không tìm thấy ảnh nào.</div>';
-                }
-            }
+            renderImageList(data, previewImg);
         } catch (e) {
             previewImg.src = '';
             previewImg.alt = 'Lỗi khi tìm ảnh';
-            if (imageListDiv) imageListDiv.innerHTML = '<div style="color:#aaa;padding:8px;">Lỗi khi tìm ảnh.</div>';
+            renderImageList([], previewImg);
         }
     }
 
